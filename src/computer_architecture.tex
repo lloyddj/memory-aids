@@ -1,0 +1,130 @@
+\documentclass[8pt]{extarticle}
+
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage[margin=0.25in]{geometry}
+\linespread{1.0}
+
+\title{Computer Architecture Memory Aid}
+\author{Daniel Lloyd}
+
+\begin{document}
+
+
+%\maketitle 
+
+\begin{multicols}{3}
+
+\section{Quantitative Measures}
+
+\subsection{The Party Is Over}
+
+\begin{itemize}
+  \item Since 2003 processor performance improvement dropped to less
+    than 22%/yr.
+  \item Maximum power dissipation of air-cooled chips.
+  \item Lack of more instruction level parallelism to exploit.
+\end{itemize}
+
+\subsection{Types of Parallelism}
+\begin{itemize}
+  \item Data-level parallelism: More than one data item can be operated on at a
+    time by the processor.
+  \item Task-level parallelism: A task created can be operated on independently
+    and largely in parallel.
+\end{itemize}
+
+\subsection{Parallelism Approaches}
+\begin{itemize}
+  \item Instruction-level parallelism: Exploit data-level parallelism by
+    executing multiple instrucitons in parallel on the same core.
+    E.g. pipelining.
+  \item Vector Architectures: Exploit data-level parallelism by applying a
+    single instruction to more than one piece of data at a time.
+  \item Thread-level parallelism: Data-level or task-level parallelism
+    that allows for interaction between threads.
+  \item Request-level parallelism: Task-level parallelism between .
+\end{itemize}
+
+\subsection{Transistor Bottlenecks}
+\begin{itemize}
+  \item Transistor performance increases linearly with decreased feature size.
+  \item Feature size is at it's limit. Lab \(1nm\), working
+    \(5nm\) (not commercial).
+  \item Power consumption problematic: On-chip power distribution is hard,
+    transient power surges are challenges for power supplies, heat removal is
+    an issue.
+  \item Power consumption in chips is due to dynamic capacitive charging and
+    shoot-through.
+\end{itemize}
+
+\subsection{Transitor Power Consumption}
+\[  P_{dyn} \propto \frac{1}{2} C V^{2} f_{SW} \]
+\[ P_{static} \propto i_{leakage} V_{CC} \]
+
+\subsection{Cost Factors}
+\begin{itemize}
+  \item Cost proportional to yield.
+  \item Volume allows for improved manufacturing, amortised development costs.
+  \item Costs decrease about 10\% by doubling volume.
+  \item Commodity selling drives down prices.
+\end{itemize}
+
+\subsection {Chip Cost}
+
+\[ C_{chip} = \frac{C_{die} + C_{testing} + C_{dev} + ...}{Y_{die}} \]
+\[ C_{die} = \frac{C_{wafer}}{P \times Y_{die}} \]
+\[ P = \frac{\pi (D_{wafer})^{2}}{A_{wafer}} -
+  \frac{\pi \times D_{wafer}}{\sqrt{2 \times A_{wafer}}} \]
+\[ Y_{die} = Y_{wafer} \times \frac{1}{(1 + K \times A)^{N}} \]
+\[ N = 11.5 \rightarrow 15.5 \]
+\[ K = 0.016 \rightarrow 0.057 / cm^2 \]
+
+\subsection{Mean Time To Failure}
+\[ A = \frac{MTTF}{MTTF + MTTR} \]
+\[ FR_n = \frac{x_{n}}{MTTF_{n}} \]
+\[ MTTF_{sys} = \frac{1}{\sum_{1}^{n} FR_{n}} \]
+
+\subsection{Computer Performance}
+\begin{itemize}
+  \item \(IC\) is the instruction count of a process.
+  \item \(CPI\) is the average clock cycles per instruction of a process. This
+    takes into account pipeline stalls, cache misses, etc.
+  \item \(N\) is the amount of clock cycles taken to complete a process.
+\end{itemize}
+
+\[ SR_{A} = \frac{T_{ref}}{T_{A}} \]
+\[ FOM = \sqrt[n]{\overset{n}{\underset{i=1}{\Pi}} SR_{i}} \]
+\[ S_{overall} = \frac{z}{z^+} = \frac{1}{(1-q) + q / S} \]
+\[ N = \sum_{i=1}^{n} IC_{i} \times CPI_{i} \]
+\[ CPI = \sum_{i=1}^{n} \frac{IC_{i}}{IC_{overall}} \times CPI_{i} \]
+
+\section{Memory Systems}
+
+\subsection{Virtual Memory}
+\begin{itemize}
+  \item Provide a memory space that is larger than physical memory.
+  \item Provide a caching mechanism for the disk memory.
+  \item Provide a memory protection mechanism.
+  \item Provide hardware support for program relocation.
+  \item Virtual address consists of a segment number and an offset.
+\end{itemize}
+
+\subsubsection{Segmentation}
+\begin{itemize}
+  \item Facilitates logical organisation into different segments.
+  \item Fine-grain protection.
+  \item Different sizes make disk interaction harder.
+  \item Can have global and local segment descriptor tables.
+\end{itemize}
+
+\subsubsection{Paging}
+\begin{itemize}
+  \item Same size segments.
+  \item Easy movement to and from disks.
+  \item Not as good at protection.
+\end{itemize}
+
+\end{multicols}
+
+\end{document}
