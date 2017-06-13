@@ -11,7 +11,7 @@
 \begin{document}
 
 
-%\maketitle 
+\maketitle 
 
 \begin{multicols}{3}
 
@@ -98,8 +98,47 @@
 \[ S_{overall} = \frac{z}{z^+} = \frac{1}{(1-q) + q / S} \]
 \[ N = \sum_{i=1}^{n} IC_{i} \times CPI_{i} \]
 \[ CPI = \sum_{i=1}^{n} \frac{IC_{i}}{IC_{overall}} \times CPI_{i} \]
+\[ AMAT = t_{cache} + MR_{cache} (t_{MM} + MR_{MM} t_{VM}) \]
 
 \section{Memory Systems}
+
+\subsection{Caches}
+\begin{tabular}{| c | l | l |}
+  \hline
+  Organ isation & \(N\) & \(S\) \\
+  \hline
+  Direct Mapped & \(1\) & \(B\) \\
+  Set Associative & \(1 < N < B\) & \(B/N\) \\
+  Fully Associative & \(B\) & \(1\) \\
+  \hline
+\end{tabular}
+
+\subsubsection{Design Decisions}
+\begin{itemize}
+  \item Increased associativity decreases the amount of conflict misses.
+  \item Increased cache size decreases the amount of conflict misses.
+  \item Associativity hardware has latency implications.
+  \item Larger block sizes reduce miss rate with spatially localised accesses.
+\end{itemize}
+
+\subsubsection{Write-Policy}
+\begin{itemize}
+  \item Write-back allows for data to stay cached until it is evicted.
+  \item Write-back is implemented by adding a dirty bit to the cache block.
+    When a block is written to the dirty bit is set. When a block with a set
+    dirty bit is evicted from the cache, it is written back to memory.
+  \item Write-through minimises on write-back and cache-coherency hardware.
+\end{itemize}
+
+\subsubsection{LRU policy}
+\begin{itemize}
+  \item Theoretically favoured.
+  \item Replaces the least recently used block in a set.
+  \item Toggles between sets as they are used. This occurs using a use-bit.
+  \item Generally a pseudo-LRU algorithm is used as 2-way LRU is much
+    easier than N-way.
+  \item Random block is selected within the LRU subset in pseudo-LRU.
+\end{itemize}
 
 \subsection{Virtual Memory}
 \begin{itemize}
@@ -108,6 +147,12 @@
   \item Provide a memory protection mechanism.
   \item Provide hardware support for program relocation.
   \item Virtual address consists of a segment number and an offset.
+  \item Virtual memory is fully-associative to eliminate conflict misses.
+  \item Address translation uses a page table with a translation
+    lookaside buffer (TLB).
+  \item When the page table is full, it page-outs. Can be LRU policy, etc.
+  \item A TLB is generally synthesised as a fully-associative cache that maps
+    a recently used virtual page number to it's physical page number.
 \end{itemize}
 
 \subsubsection{Segmentation}
